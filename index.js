@@ -3,6 +3,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
+const fs = require('fs');
+var parse = require('csv');
 const app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -31,8 +33,32 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
 
-const token = "EAAD3SZC85iycBAGo258EDtw0NDVHHZBcMBMOnaHXZB2ZBMIkBnYYk5nq5HFlglEKGxobZCLuZBRX40jVFJFt5XLA16fzpA5KGNWUXeU9N5IndYhkAVKTDHSZCeuI4GD1ZAlQhbdvRizCdvvEm5nWYxXU3pD2HN9oxh9lP46YP1qPOgZDZD";
+const token = "EAAJ2s9H6iDoBAGpQ5zpRZAy21pZCFgLgNDdh5EsR87ZC0SLRqMyRfXp3pCjbvE3jSvZBLrmTwxBifvvj2vGZClwehqUO9c577GsQZAVH7xy3OMNLU3KvyRoZCRPs2rJVswqQtGgNRYlisTbWcNOSHpjQioZAEZCDaJJ90oUUDHJVUagZDZD";
 
+function chooseCategoryMessage(sender){
+  let message = {
+		"attachment":{
+		"type":"template",
+		"payload":{
+			"template_type":"button",
+			"text":"Choose Category?",
+			"buttons":[
+				{
+					"type":"postback",
+					"title":"Literature",
+					"payload":"USER_DEFINED_PAYLOAD"
+				},
+				{
+					"type":"postback",
+					"title":"History",
+					"payload":"USER_DEFINED_PAYLOAD"
+				}
+				]
+			}
+		}
+	}
+	send(sender,message);
+}
 function sendGenericMessage(sender) {
     let messageData = {
 	    "attachment": {
@@ -40,7 +66,7 @@ function sendGenericMessage(sender) {
 		    "payload": {
 				"template_type": "generic",
 			    "elements": [{
-					"title": "First card",
+					"title": "Choose Category",
 				    "subtitle": "Element #1 of an hscroll",
 				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
 				    "buttons": [{
@@ -65,13 +91,17 @@ function sendGenericMessage(sender) {
 		    }
 	    }
     };
+	send(sender, messageData);
+}
+
+function send(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
 	    qs: {access_token:token},
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
-		    message: messageData,
+		    message: { text: msg },
 	    }
     }, function(error, response, body) {
 	    if (error) {
@@ -82,23 +112,18 @@ function sendGenericMessage(sender) {
     });
 }
 
-function sendTextMessage(sender, msg){
-    request({
-	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:token},
-	    method: 'POST',
-	    json: {
-		    recipient: {id:sender},
-		    message: {text: msg },
-	    }
-    }, function(error, response, body) {
-	    if (error) {
-		    console.log('Error sending messages: ', error);
-	    } else if (response.body.error) {
-		    console.log('Error: ', response.body.error);
-	    }
-    });
+
+
+function getQuestion(category){
+	var path = "categories/"+category+".csv";
+	fs.readFile(path, function (err, data) {
+		parse(fileData, {columns: false, trim: true}, function(err, rows) {
+			// Your CSV data is in an array of arrys passed to this callback as rows.
+			return rows[0][0];
+		})
+	})
 }
+
 
 
 app.post('/webhook/', function (req, res) {
@@ -108,15 +133,16 @@ app.post('/webhook/', function (req, res) {
       let sender = event.sender.id;
       if (event.message && event.message.text) {
   	    let text = event.message.text;
-  	    if (text === 'Generic') {
-  		    sendGenericMessage(sender);
+		
+  	    if (text === 'category') {
+  		    chooseCategoryMessage(sender);
   		    continue;
   	    }
-  	    sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+  	    send(sender, getQuestion('history'));
       }
       if (event.postback) {
   	    let text = JSON.stringify(event.postback);
-  	    sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token);
+  	    send(sender, "Postback received: "+text.substring(0, 200));
   	    continue;
       }
     }
