@@ -47,7 +47,7 @@ function sendAPI(sender, msg){
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
-		    message: { text: msg },
+		    message: msg,
 	    }
     }, function(error, response, body) {
 	    if (error) {
@@ -142,13 +142,13 @@ app.post('/webhook/', function (req, res) {
 		else if( text == "generic")
 			sendGenericMessage(sender);
 		else if( text == "test")
-			sendAPI(sender, getQuestion('history'));
+			sendAPI(sender, { text: getQuestion('history') });
 		else
-  	    	sendAPI(sender, text.substring(0, 200));
+  	    	sendAPI(sender, { text: text.substring(0, 200) });
       }
       if (event.postback) {
   	    let text = JSON.stringify(event.postback);
-  	    sendAPI(sender, "Postback received: "+text.substring(0, 200));
+  	    sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
   	    continue;
       }
     }
