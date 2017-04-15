@@ -20,6 +20,11 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot');
 });
 
+// Index route
+app.get('/history', function (req, res) {
+	res.send(getQuestion('history'));
+});
+
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
@@ -33,7 +38,9 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
 
-const token = "EAAJ2s9H6iDoBAGpQ5zpRZAy21pZCFgLgNDdh5EsR87ZC0SLRqMyRfXp3pCjbvE3jSvZBLrmTwxBifvvj2vGZClwehqUO9c577GsQZAVH7xy3OMNLU3KvyRoZCRPs2rJVswqQtGgNRYlisTbWcNOSHpjQioZAEZCDaJJ90oUUDHJVUagZDZD";
+
+
+const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
 
 function chooseCategoryMessage(sender){
   let message = {
