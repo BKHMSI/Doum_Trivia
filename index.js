@@ -179,6 +179,37 @@ function sendGenericMessage(sender) {
 	sendAPI(sender, messageData);
 }
 
+function sendCatMessage(sender) {
+    let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "generic",
+			    "elements": [{
+					"title": "مشكل",
+				    "subtitle": "!اختبر معلوماتك في كل حاجة",
+				    "image_url": "images/app.png",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "اختار",
+					    "payload": "random",
+				    }],
+			    }, {
+				    "title": "تاريخ",
+				    "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
+				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "اختار",
+					    "payload": "history",
+				    }],
+			    }]
+		    }
+	    }
+    }
+	sendAPI(sender, messageData);
+}
+
 function getQuestion(category){
 	var path = "categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
@@ -198,7 +229,7 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    sendCategoryMessage(sender);
+  		    sendCatMessage(sender);
 		else if( text == "generic")
 			sendGenericMessage(sender);
 		else if( text == "answer")
