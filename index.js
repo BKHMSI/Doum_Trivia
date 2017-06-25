@@ -151,9 +151,9 @@ function sendGenericMessage(sender) {
 		    "payload": {
 				"template_type": "generic",
 			    "elements": [{
-				    "title": "First card",
+				    "title": "مشكل",
 				    "subtitle": "Element #2 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+				    "image_url": "images/app.png",
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "Postback",
