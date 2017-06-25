@@ -91,7 +91,7 @@ function sendCategoryMessage(sender) {
 			    "elements": [{
 					"title": "مشكل",
 				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "images/app.png",
+				    "image_url": "https://scontent-mrs1-1.xx.fbcdn.net/v/t31.0-8/19453000_434291670285571_891105082290209342_o.png?oh=71d662e34d12e948f35e854a62ba1896&oe=59E1E980",
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
@@ -225,7 +225,7 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    sendCatMessage(sender);
+  		    sendCategoryMessage(sender);
 		else if( text == "generic")
 			sendGenericMessage(sender);
 		else if( text == "answer")
