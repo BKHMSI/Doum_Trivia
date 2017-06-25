@@ -175,43 +175,14 @@ function sendGenericMessage(sender) {
 	sendAPI(sender, messageData);
 }
 
-function sendCatMessage(sender) {
-    let messageData = {
-	    "attachment": {
-		    "type": "template",
-		    "payload": {
-				"template_type": "generic",
-			    "elements": [{
-					"title": "مشكل",
-				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "images/app.png",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "random",
-				    }],
-			    }, {
-				    "title": "تاريخ",
-				    "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
-				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "history",
-				    }],
-			    }]
-		    }
-	    }
-    }
-	sendAPI(sender, messageData);
-}
-
 function getQuestion(category){
 	var path = "categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
 			// Your CSV data is in an array of arrys passed to this callback as rows.
-			console.log(rows);
+			if(err){
+				return console.log(err)
+			}
 			return rows[0][0];
 		})
 	})
