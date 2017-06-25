@@ -40,6 +40,7 @@ app.listen(app.get('port'), function() {
 
 
 const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
+
 function sendAPI(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -67,18 +68,19 @@ function chooseAnswer(sender){
 				"content_type":"text",
 				"title":"غلط",
 				"payload":"wrong",
-				"image_url":"http://petersfantastichats.com/img/red.png"
+				"image_url":"http://www.thepointless.com/images/reddot.jpg"
 			},
 			{
 				"content_type":"text",
 				"title":"صح",
 				"payload":"correct",
-				"image_url":"http://petersfantastichats.com/img/green.png"
+				"image_url":"http://i.imgur.com/g2n3G3A.jpg"
 			}
 		]
 	};
 	sendAPI(sender, message);
 }
+
 
 function sendGenericMessage(sender) {
     let messageData = {
@@ -89,14 +91,13 @@ function sendGenericMessage(sender) {
 			    "elements": [{
 					"title": "مشكل",
 				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "/images/app.png",
+				    "image_url": "images/app.png",
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
 					    "payload": "random",
 				    }],
 			    }, 
-					
 				{
 					"title": "تاريخ",
 				    "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
