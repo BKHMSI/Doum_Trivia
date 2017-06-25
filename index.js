@@ -7,6 +7,10 @@ const fs = require('fs');
 var parse = require('csv');
 const app = express();
 
+// MongoDB info
+const mongoose = require('mongoose');
+const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
+
 app.set('port', (process.env.PORT || 5000));
 
 // Process application/x-www-form-urlencoded
@@ -176,13 +180,11 @@ function sendGenericMessage(sender) {
 }
 
 function getQuestion(category){
-	var path = "categories/"+category+".csv";
+	var path = "./categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
 			// Your CSV data is in an array of arrys passed to this callback as rows.
-			if(err){
-				return console.log(err)
-			}
+			if(err) return console.log(err);
 			return rows[0][0];
 		})
 	})
