@@ -95,8 +95,8 @@ function sendCategoryMessage(sender) {
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
-					    "payload": "random"
-				    }]
+					    "payload": "random",
+				    }],
 			    }, 
 				{
 					"title": "تاريخ",
@@ -105,8 +105,8 @@ function sendCategoryMessage(sender) {
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
-					    "payload": "history"
-				    }]
+					    "payload": "history",
+				    }],
 			    }, 
 				{
 					"title": "أدب",
@@ -115,8 +115,8 @@ function sendCategoryMessage(sender) {
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
-					    "payload": "literature"
-				    }]
+					    "payload": "literature",
+				    }],
 				}, 
 				{
 				    "title": "هندسة",
@@ -125,8 +125,8 @@ function sendCategoryMessage(sender) {
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
-					    "payload": "engineering"
-				    }]
+					    "payload": "engineering",
+				    }],
 			    },
 				{
 					"title": "تكنولوجيا",
@@ -135,8 +135,8 @@ function sendCategoryMessage(sender) {
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
-					    "payload": "technology"
-				    }]
+					    "payload": "technology",
+				    }],
 				}]
 		    }
 	    }
