@@ -151,17 +151,13 @@ function sendGenericMessage(sender) {
 		    "payload": {
 				"template_type": "generic",
 			    "elements": [{
-					"title": "First card",
-				    "subtitle": "Element #1 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+				    "title": "First card",
+				    "subtitle": "Element #2 of an hscroll",
+				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
 				    "buttons": [{
-					    "type": "web_url",
-					    "url": "https://www.messenger.com",
-					    "title": "web url"
-				    }, {
 					    "type": "postback",
 					    "title": "Postback",
-					    "payload": "Payload for first element in a generic bubble",
+					    "payload": "Payload for second element in a generic bubble",
 				    }],
 			    }, {
 				    "title": "Second card",
@@ -188,7 +184,7 @@ function sendCatMessage(sender) {
 			    "elements": [{
 					"title": "مشكل",
 				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "/images/app.png",
+				    "image_url": "images/app.png",
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
