@@ -83,6 +83,62 @@ function chooseCategoryMessage(sender){
 	sendAPI(sender,message);
 }
 
+function chooseAnswer(sender){
+	let message = {
+		"text":"صح ولا غلط",
+		"quick_replies":[
+			{
+				"content_type":"text",
+				"title":"غلط",
+				"payload":"wrong",
+				"image_url":"http://petersfantastichats.com/img/red.png"
+			},
+			{
+				"content_type":"text",
+				"title":"صح",
+				"payload":"correct",
+				"image_url":"http://petersfantastichats.com/img/green.png"
+			}
+		]
+	};
+	sendAPI(sender, message);
+}
+
+
+function sendCategoryMessage(sender){
+	let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "generic",
+			    "elements": [{
+					"title": "Choose Category",
+				    "subtitle": "Categories:",
+				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "تازيخ",
+					    "payload": "history",
+				    }, {
+					    "type": "postback",
+					    "title": "أدب",
+					    "payload": "literature",
+				    }, {
+					    "type": "postback",
+					    "title": "هندسة",
+					    "payload": "engineering",
+				    }, {
+					    "type": "postback",
+					    "title": "تكنولوجيا",
+					    "payload": "technology",
+				    }
+					]
+			    }]
+		    }
+	    }
+    };
+	sendAPI(sender, messageData);
+}
 
 function sendGenericMessage(sender) {
     let messageData = {
@@ -93,7 +149,7 @@ function sendGenericMessage(sender) {
 			    "elements": [{
 					"title": "Choose Category",
 				    "subtitle": "Element #1 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
 				    "buttons": [{
 					    "type": "web_url",
 					    "url": "https://www.messenger.com",
@@ -138,9 +194,11 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    chooseCategoryMessage(sender);
+  		    sendCategoryMessage(sender);
 		else if( text == "generic")
 			sendGenericMessage(sender);
+		else if( text == "answer")
+			chooseAnswer(sender);
 		else if( text == "test")
 			sendAPI(sender, { text: getQuestion('history') });
 		else
