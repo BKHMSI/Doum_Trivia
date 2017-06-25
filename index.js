@@ -144,6 +144,41 @@ function sendCategoryMessage(sender) {
 	sendAPI(sender, messageData);
 }
 
+function sendGenericMessage(sender) {
+    let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "generic",
+			    "elements": [{
+					"title": "First card",
+				    "subtitle": "Element #1 of an hscroll",
+				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+				    "buttons": [{
+					    "type": "web_url",
+					    "url": "https://www.messenger.com",
+					    "title": "web url"
+				    }, {
+					    "type": "postback",
+					    "title": "Postback",
+					    "payload": "Payload for first element in a generic bubble",
+				    }],
+			    }, {
+				    "title": "Second card",
+				    "subtitle": "Element #2 of an hscroll",
+				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "Postback",
+					    "payload": "Payload for second element in a generic bubble",
+				    }],
+			    }]
+		    }
+	    }
+    }
+	sendAPI(sender, messageData);
+}
+
 function getQuestion(category){
 	var path = "categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
@@ -165,7 +200,7 @@ app.post('/webhook/', function (req, res) {
   	    if (text === "category") 
   		    sendCategoryMessage(sender);
 		else if( text == "generic")
-			sendCategoryMessage(sender);
+			sendGenericMessage(sender);
 		else if( text == "answer")
 			chooseAnswer(sender);
 		else if( text == "test")
