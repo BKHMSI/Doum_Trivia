@@ -188,7 +188,7 @@ function sendCatMessage(sender) {
 			    "elements": [{
 					"title": "مشكل",
 				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "images/app.png",
+				    "image_url": "/images/app.png",
 				    "buttons": [{
 					    "type": "postback",
 					    "title": "اختار",
