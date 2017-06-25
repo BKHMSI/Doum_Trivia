@@ -24,12 +24,12 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot');
 });
 
-// Index route
+// History route
 app.get('/history', function (req, res) {
 	res.send(getQuestion('history'));
 });
 
-// for Facebook verification
+// For Facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
 		res.send(req.query['hub.challenge']);
@@ -184,7 +184,7 @@ function getQuestion(category){
 	fs.readFile(path, function (err, data) {
 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
 			// Your CSV data is in an array of arrys passed to this callback as rows.
-			if(err) return console.log(err);
+			if(err) return err;
 			return rows[0][0];
 		})
 	})
