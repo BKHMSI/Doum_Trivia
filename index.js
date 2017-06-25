@@ -163,9 +163,9 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    sendGenericMessage(sender);
+  		    sendCategoryMessage(sender);
 		else if( text == "generic")
-			sendGenericMessage(sender);
+			sendCategoryMessage(sender);
 		else if( text == "answer")
 			chooseAnswer(sender);
 		else if( text == "test")
