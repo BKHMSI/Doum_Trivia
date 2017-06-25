@@ -58,30 +58,6 @@ function sendAPI(sender, msg){
     });
 }
 
-function chooseCategoryMessage(sender){
-  let message = {
-		"attachment":{
-		"type":"template",
-		"payload":{
-			"template_type":"button",
-			"text":"Choose Category",
-			"buttons":[
-					{
-						"type":"postback",
-						"title":"Literature",
-						"payload":"literature"
-					},
-					{
-						"type":"postback",
-						"title":"History",
-						"payload":"history"
-					}
-				]
-			}
-		}
-	}
-	sendAPI(sender,message);
-}
 
 function chooseAnswer(sender){
 	let message = {
@@ -104,42 +80,6 @@ function chooseAnswer(sender){
 	sendAPI(sender, message);
 }
 
-
-function sendCategoryMessage(sender){
-	let messageData = {
-	    "attachment": {
-		    "type": "template",
-		    "payload": {
-				"template_type": "generic",
-			    "elements": [{
-					"title": "Choose Category",
-				    "subtitle": "Categories:",
-				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "تازيخ",
-					    "payload": "history",
-				    }, {
-					    "type": "postback",
-					    "title": "أدب",
-					    "payload": "literature",
-				    }, {
-					    "type": "postback",
-					    "title": "هندسة",
-					    "payload": "engineering",
-				    }, {
-					    "type": "postback",
-					    "title": "تكنولوجيا",
-					    "payload": "technology",
-				    }
-					]
-			    }]
-		    }
-	    }
-    };
-	sendAPI(sender, messageData);
-}
-
 function sendGenericMessage(sender) {
     let messageData = {
 	    "attachment": {
@@ -147,28 +87,56 @@ function sendGenericMessage(sender) {
 		    "payload": {
 				"template_type": "generic",
 			    "elements": [{
-					"title": "Choose Category",
-				    "subtitle": "Element #1 of an hscroll",
+					"title": "مشكل",
+				    "subtitle": "!اختبر معلوماتك في كل حاجة",
+				    "image_url": "/images/app.png",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "اختار",
+					    "payload": "random",
+				    }],
+			    }, 
+					
+				{
+					"title": "تاريخ",
+				    "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
 				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
 				    "buttons": [{
-					    "type": "web_url",
-					    "url": "https://www.messenger.com",
-					    "title": "web url"
-				    }, {
 					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Payload for first element in a generic bubble",
+					    "title": "اختار",
+					    "payload": "history",
 				    }],
-			    }, {
-				    "title": "Second card",
-				    "subtitle": "Element #2 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+			    }, 
+				{
+					"title": "أدب",
+				    "subtitle": "!اختبر معلوماتك في الأدب",
+				    "image_url": "http://az616578.vo.msecnd.net/files/2017/01/14/636200150034011507-1107693164_EP%20-%20Can%20Literature%20Teach%20Business.jpg",
 				    "buttons": [{
 					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Payload for second element in a generic bubble",
+					    "title": "اختار",
+					    "payload": "literature",
 				    }],
-			    }]
+				}, 
+				{
+				    "title": "هندسة",
+				    "subtitle":  "شوف تعرف اد ايه في الهندسة؟",
+				    "image_url": "http://www.copperstateengineering.com/wp-content/uploads/2016/01/engineering-blueprint.jpg",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "اختار",
+					    "payload": "engineering",
+				    }],
+			    },
+				{
+					"title": "تكنولوجيا",
+				    "subtitle": "!اختبر معلوماتك في التكنولوجيا",
+				    "image_url": "http://i.huffpost.com/gen/1928539/images/o-BRAIN-TECHNOLOGY-facebook.jpg",
+				    "buttons": [{
+					    "type": "postback",
+					    "title": "اختار",
+					    "payload": "technology",
+				    }],
+				}]
 		    }
 	    }
     };
@@ -194,7 +162,7 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    sendCategoryMessage(sender);
+  		    sendGenericMessage(sender);
 		else if( text == "generic")
 			sendGenericMessage(sender);
 		else if( text == "answer")
