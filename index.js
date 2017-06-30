@@ -42,11 +42,40 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
 
+// Set FB bot greeting text
+// facebookThreadAPI('./fb-greeting-text.json', 'Greating Text');
+// Set FB bot get started button
+// facebookThreadAPI('./fb-get-started-button.json', 'Get Started Button');
+// Set FB bot persistent menu
+// facebookThreadAPI('./fb-persistent-menu.json', 'Persistent Menu');
+
+// Calls the Facebook graph api to change various bot settings
+function facebookThreadAPI(jsonFile, cmd){
+    // Start the request
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.PAGE_TOKEN,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        form: require(jsonFile)
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // Print out the response body
+            console.log(cmd+": Updated.");
+            console.log(body);
+        } else { 
+            // TODO: Handle errors
+            console.log(cmd+": Failed. Need to handle errors.");
+            console.log(body);
+        }
+    });
+}
+
 // mongodb://<dbuser>:<dbpassword>@ds141242.mlab.com:41242/doum_trivia
 // mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
 // const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
 
-function send_api(sender, msg){
+function sendAPI(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
 	    qs: { access_token: process.env.PAGE_TOKEN },
@@ -65,7 +94,7 @@ function send_api(sender, msg){
 }
 
 
-function choose_answer(sender){
+function chooseAnswer(sender){
 	let message = {
 		"text":"صح ولا غلط",
 		"quick_replies":[
@@ -83,11 +112,11 @@ function choose_answer(sender){
 			}
 		]
 	};
-	send_api(sender, message);
+	sendAPI(sender, message);
 }
 
 
-function send_categories(sender) {
+function sendCategories(sender) {
     let messageData = {
 	    "attachment": {
 		    "type": "template",
@@ -146,41 +175,10 @@ function send_categories(sender) {
 		    }
 	    }
     };
-	send_api(sender, messageData);
+	sendAPI(sender, messageData);
 }
 
-function send_generic(sender) {
-    let messageData = {
-	    "attachment": {
-		    "type": "template",
-		    "payload": {
-				"template_type": "generic",
-			    "elements": [{
-				    "title": "مشكل",
-				    "subtitle": "Element #2 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Payload for second element in a generic bubble",
-				    }],
-			    }, {
-				    "title": "Second card",
-				    "subtitle": "Element #2 of an hscroll",
-				    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Payload for second element in a generic bubble",
-				    }],
-			    }]
-		    }
-	    }
-    }
-	send_api(sender, messageData);
-}
-
-function get_question(category){
+function getQuestion(category){
 	var path = "./categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
@@ -199,27 +197,25 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    send_categories(sender);
-		else if( text == "generic")
-			send_generic(sender);
+  		    sendCategories(sender);
 		else if( text == "answer")
-			choose_answer(sender);
+			chooseAnswer(sender);
 		else if( text == "test")
-			send_api(sender, { text: getQuestion('history') });
+			sendAPI(sender, { text: getQuestion('history') });
 		else
-  	    	send_api(sender, { text: text.substring(0, 200) });
+  	    	sendAPI(sender, { text: text.substring(0, 200) });
       }
       if (event.postback) {
-		process_postback(event);
+		processPostback(event);
       }
     }
     res.sendStatus(200);
   })
 
-  function process_postback(event){
+  function processPostback(event){
 	let text = JSON.stringify(event.postback);
 	var senderId = event.sender.id;
 	var payload = event.postback.payload;
-	send_api(sender, { text: "Postback received: "+text.substring(0, 200) });
+	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	continue;
   }
