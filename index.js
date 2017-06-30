@@ -31,7 +31,7 @@ app.get('/history', function (req, res) {
 
 // For Facebook verification
 app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
+	if (req.query['hub.verify_token'] === process.env.VERIFICATION_TOKEN) {
 		res.send(req.query['hub.challenge']);
 	}
 	res.send('Error, wrong token');
@@ -42,13 +42,14 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
 
+// mongodb://<dbuser>:<dbpassword>@ds141242.mlab.com:41242/doum_trivia
+// mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
+// const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
 
-const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
-
-function sendAPI(sender, msg){
+function send_api(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:token},
+	    qs: { access_token: process.env.PAGE_TOKEN },
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
@@ -64,7 +65,7 @@ function sendAPI(sender, msg){
 }
 
 
-function chooseAnswer(sender){
+function choose_answer(sender){
 	let message = {
 		"text":"صح ولا غلط",
 		"quick_replies":[
@@ -82,11 +83,11 @@ function chooseAnswer(sender){
 			}
 		]
 	};
-	sendAPI(sender, message);
+	send_api(sender, message);
 }
 
 
-function sendCategoryMessage(sender) {
+function send_categories(sender) {
     let messageData = {
 	    "attachment": {
 		    "type": "template",
@@ -145,10 +146,10 @@ function sendCategoryMessage(sender) {
 		    }
 	    }
     };
-	sendAPI(sender, messageData);
+	send_api(sender, messageData);
 }
 
-function sendGenericMessage(sender) {
+function send_generic(sender) {
     let messageData = {
 	    "attachment": {
 		    "type": "template",
@@ -176,10 +177,10 @@ function sendGenericMessage(sender) {
 		    }
 	    }
     }
-	sendAPI(sender, messageData);
+	send_api(sender, messageData);
 }
 
-function getQuestion(category){
+function get_question(category){
 	var path = "./categories/"+category+".csv";
 	fs.readFile(path, function (err, data) {
 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
@@ -198,21 +199,27 @@ app.post('/webhook/', function (req, res) {
       if (event.message && event.message.text) {
   	    let text = event.message.text;
   	    if (text === "category") 
-  		    sendCategoryMessage(sender);
+  		    send_categories(sender);
 		else if( text == "generic")
-			sendGenericMessage(sender);
+			send_generic(sender);
 		else if( text == "answer")
-			chooseAnswer(sender);
+			choose_answer(sender);
 		else if( text == "test")
-			sendAPI(sender, { text: getQuestion('history') });
+			send_api(sender, { text: getQuestion('history') });
 		else
-  	    	sendAPI(sender, { text: text.substring(0, 200) });
+  	    	send_api(sender, { text: text.substring(0, 200) });
       }
       if (event.postback) {
-  	    let text = JSON.stringify(event.postback);
-  	    sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
-  	    continue;
+		process_postback(event);
       }
     }
     res.sendStatus(200);
   })
+
+  function process_postback(event){
+	let text = JSON.stringify(event.postback);
+	var senderId = event.sender.id;
+	var payload = event.postback.payload;
+	send_api(sender, { text: "Postback received: "+text.substring(0, 200) });
+	continue;
+  }
