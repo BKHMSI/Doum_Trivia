@@ -53,26 +53,26 @@ app.listen(app.get('port'), function() {
 const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
 
 // Calls the Facebook graph api to change various bot settings
-function facebookThreadAPI(jsonFile, cmd){
-    // Start the request
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+token,
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        form: require(jsonFile)
-    },
-    function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            // Print out the response body
-            console.log(cmd+": Updated.");
-            console.log(body);
-        } else { 
-            // TODO: Handle errors
-            console.log(cmd+": Failed. Need to handle errors.");
-            console.log(body);
-        }
-    });
-}
+// function facebookThreadAPI(jsonFile, cmd){
+//     // Start the request
+//     request({
+//         url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+token,
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json'},
+//         form: require(jsonFile)
+//     },
+//     function (error, response, body) {
+//         if (!error && response.statusCode == 200) {
+//             // Print out the response body
+//             console.log(cmd+": Updated.");
+//             console.log(body);
+//         } else { 
+//             // TODO: Handle errors
+//             console.log(cmd+": Failed. Need to handle errors.");
+//             console.log(body);
+//         }
+//     });
+// }
 
 
 
