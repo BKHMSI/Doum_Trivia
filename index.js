@@ -49,11 +49,14 @@ app.listen(app.get('port'), function() {
 // Set FB bot persistent menu
 // facebookThreadAPI('./fb-persistent-menu.json', 'Persistent Menu');
 
+// mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
+const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
+
 // Calls the Facebook graph api to change various bot settings
 function facebookThreadAPI(jsonFile, cmd){
     // Start the request
     request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.PAGE_TOKEN,
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+token,
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         form: require(jsonFile)
@@ -71,14 +74,12 @@ function facebookThreadAPI(jsonFile, cmd){
     });
 }
 
-// mongodb://<dbuser>:<dbpassword>@ds141242.mlab.com:41242/doum_trivia
-// mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
-// const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
+
 
 function sendAPI(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: { access_token: process.env.PAGE_TOKEN },
+	    qs: { access_token: token },
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
