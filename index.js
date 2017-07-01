@@ -90,7 +90,6 @@ function chooseAnswer(sender){
 	sendAPI(sender, message);
 }
 
-
 function sendCategories(sender) {
     let message = require('./json/categories.json'); 
 	sendAPI(sender, messageData);
@@ -109,9 +108,18 @@ function getQuestion(category){
 
 function processPostback(event){
 	let text = JSON.stringify(event.postback);
-	var senderId = event.sender.id;
+	var sender = event.sender.id;
 	var payload = event.postback.payload;
-	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+	switch(payload){
+		case "change_category":
+			sendCategories(sender);
+			break;
+		case "about":
+			sendAPI(sender, require('./json/about_doum.json'));
+			break;
+		default:
+			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+	}
 }
 
 app.post('/webhook/', function (req, res) {

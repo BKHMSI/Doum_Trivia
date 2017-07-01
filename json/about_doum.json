@@ -1,0 +1,18 @@
+{
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "generic",
+            "elements": [{
+                "title": "دوم",
+                "subtitle": "“دوم” مؤسسة ثقافية مصرية غير ربحية، غايتها العمل على دعم العقلية النقدية في المجتمع المصري. تهدف مؤسسة “دوم” إلى إنتاج مادة ثقافية ومعرفي",
+                "image_url": "http://i.huffpost.com/gen/1928539/images/o-BRAIN-TECHNOLOGY-facebook.jpg",
+                "buttons": [{
+                    "type": "web_url",
+                    "url": "https://www.facebook.com/DoumCulturalFoundation/",
+                    "title": "صفحة دوم"
+                }]
+            }]
+        }
+    }
+}
