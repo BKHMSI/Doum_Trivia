@@ -20,6 +20,7 @@ var Schema = mongoose.Schema;
 var GameSchema = new Schema({
   user_id: {type: String},
   category: {type: String},
+  q_id: {type: Number},
   score: {type: Number},
   count: {type: Number},
   total_score: {type: Number}
@@ -120,46 +121,108 @@ function sendCategories(sender) {
 	sendAPI(sender, message);
 }
 
-// function updateDB(sender, category){
-// 	var query = {user_id: sender};
-// 	Game.findOne(query)
-// 	var update = {
-// 		user_id: sender,
-
-// 	}
-// 	Game.findOneAndUpdate
-// }
-
 function askQuestion(sender, question, category){
 	sendAPI(sender, { text:  "س: " + question });
-	//updateDB(sender, category);
 	sendSa7WalaGhalat(sender);
 }
 
-function getQuestion(sender, category){
+function getQuestion(sender, category, obj, isCorrect){
 	var idx = 0;
+	var question = "";
+
 	switch(category){
 		case "literature":
 			idx = Math.floor(Math.random() * literature.length);
-			askQuestion(sender, literature[idx]["question"], category);
+			question = literature[idx]["question"];
 			break;
 		case "history":
 			idx = Math.floor(Math.random() * history.length);
-			askQuestion(sender, history[idx]["question"], category);
+			question = history[idx]["question"];
 			break;
 		case "engineering":
 			idx = Math.floor(Math.random() * engineering.length);
-			askQuestion(sender, engineering[idx]["question"], category);
+			question = engineering[idx]["question"];
 			break;
 		default:
 			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	}
+
+	var query = {user_id: sender};
+	var options = {upsert: true};
+	var update = {
+		user_id: sender,
+		category: category,
+		q_id: idx,
+		score: obj == null ? 0 : (isCorrect ? obj.score+1:obj.score),
+		count: obj == null ? 0 : obj.count + 1,
+		total_score: 0
+	}
+	
+	Game.findOneAndUpdate(query, update, options, function(err, game){
+		if(err)
+			console.log("Database Error: "+err);
+	});
+
+	askQuestion(sender, question, category);
 }
 
 function sendGetStarted(sender){
 	var greeting = "";
 	sendAPI(sender, { text: greeting });
 	sendCategories(sender);
+}
+
+function sendFinalResult(sender){
+	console.log("Final Result");
+}
+
+function sendCorrection(sender, correction, isCorrect, obj){
+	if(isCorrect){
+		sendAPI(sender, {text: "👍 إجابة صحيحة"});
+		if(correction.trim() != "")
+			sendAPI(sender, {text: correction});
+		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score+1) + "/5"});
+	}else{
+		sendAPI(sender, {text: "✗ إجابة خاطئة"});
+		if(correction.trim() != "")
+			sendAPI(sender, {text: correction});
+		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score) + "/5"});
+	}
+	if(obj.count+1 == 5){
+		sendFinalResult(sender);
+	}else{
+		getQuestion(sender, obj.category, obj, isCorrect);
+	}
+}
+
+function checkAnswer(sender, answer){
+	var query = {user_id: sender};
+	var q_id = 0, real = 0;
+	var correction = "";
+	var isCorrect = false;
+	Game.findOne(query, function(err, obj){
+		if(err){
+			console.log("Databse Error: " + err);
+		}else{
+			switch(obj.category){
+				case "literature":
+					real = literature[obj.q_id]["answer"];
+					correction = literature[obj.q_id]["correction"];
+					break;
+				case "history":
+					real = history[obj.q_id]["answer"];
+					correction = history[obj.q_id]["correction"];
+					break;
+				case "engineering":
+					real = engineering[obj.q_id]["answer"];
+					correction = engineering[obj.q_id]["correction"]
+					break;
+			}
+			
+			isCorrect = real == answer;
+			sendCorrection(sender, correction, isCorrect, obj);
+		}
+	});
 }
 
 
@@ -176,17 +239,19 @@ function processPostback(event){
 			break;
 		case "random":
 			var cat = categories[Math.floor(Math.random() * categories.length)];
-			getQuestion(sender, cat);
+			getQuestion(sender, cat, null, false);
 			break;
 		case "correct":
+			checkAnswer(sender, 1);
 			break;
 		case "wrong":
+			checkAnswer(sender, 0);
 			break;
 		case "about":
 			sendAPI(sender, require('./json/about_doum.json'));
 			break;
 		default:
-			getQuestion(sender, payload);
+			getQuestion(sender, payload, null, false);
 	}
 }
 
