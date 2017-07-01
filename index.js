@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 
 // History route
 app.get('/history', function (req, res) {
-	getQuestion('history');
+	getQuestion("history");
 });
 
 // For Facebook verification
@@ -127,22 +127,32 @@ function processPostback(event){
 	}
 }
 
+function processMessage(event){
+	let text = event.message.text;
+	var sender = event.sender.id;
+	switch(text){
+		case "category":
+			sendCategories(sender);
+			break;
+		case "answer":
+			chooseAnswer(sender);
+			break;
+		case "test":
+			sendAPI(sender, { text: getQuestion("history") });
+			break;
+		default:
+			sendAPI(sender, { text: text.substring(0, 200) });
+	}
+}
+
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging;
     for (let i = 0; i < messaging_events.length; i++) {
       let event = req.body.entry[0].messaging[i];
-      let sender = event.sender.id;
-      if (event.message && event.message.text) {
-  	    let text = event.message.text;
-  	    if (text === "category")
-  		    sendCategories(sender);
-		else if( text == "answer")
-			chooseAnswer(sender);
-		else if( text == "test")
-			sendAPI(sender, { text: getQuestion('history') });
-		else
-  	    	sendAPI(sender, { text: text.substring(0, 200) });
-      }
+
+      if(event.message && event.message.text)
+	  	processMessage(event);
+
       if (event.postback) {
 		processPostback(event);
 		continue;
