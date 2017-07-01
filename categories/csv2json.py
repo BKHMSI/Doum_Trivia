@@ -1,8 +1,8 @@
 import csv
 import json
 
-csvfile = open('history.csv', 'r')
-jsonfile = open('history.json', 'w')
+csvfile = open('literature.csv', 'r')
+jsonfile = open('literature.json', 'w')
 
 fieldnames = ("question","answer","correction","difficulty")
 reader = csv.DictReader(csvfile, fieldnames)

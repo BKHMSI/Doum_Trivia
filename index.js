@@ -10,7 +10,11 @@ const app = express();
 
 
 // Q&A
+var categories = ["history", "literature", "engineering"];
 var history = require('./categories/history.json');
+var literature = require('./categories/literature.json');
+var engineering = require('./categories/engineering.json');
+
 // MongoDB info
 // const mongoose = require('mongoose');
 // const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
@@ -30,7 +34,7 @@ app.get('/', function (req, res) {
 
 // History route
 app.get('/history', function (req, res) {
-	res.send(history[0]["question"]);
+	res.send(history[0]["question"] + " " + history.length);
 });
 
 // For Facebook verification
@@ -95,7 +99,7 @@ function sendAPI(sender, msg){
 }
 
 
-function chooseAnswer(sender){
+function sendSa7WalaGhalat(sender){
 	let message = require('./json/choose_answer.json')
 	sendAPI(sender, message);
 }
@@ -105,13 +109,26 @@ function sendCategories(sender) {
 	sendAPI(sender, message);
 }
 
-function getQuestion(category){
-	var path = "./categories/"+category+".csv";
-	csv.fromPath(path).on("data", function(data){
-		console.log(data);
-	}).on("end", function(){
-		console.log("done");
-	});
+function askQuestion(sender, question){
+	sendAPI(sender, { text:  "س: " + question });
+	sendSa7WalaGhalat(sender);
+}
+
+function getQuestion(sender, category){
+	var idx = 0;
+	switch(category){
+		case "literature":
+			idx = Math.floor(Math.random() * literature.length);
+			askQuestion(sender, literature[idx][question]);
+		case "history":
+			idx = Math.floor(Math.random() * history.length);
+			askQuestion(sender, history[idx][question]);
+		case "engineering":
+			idx = Math.floor(Math.random() * engineering.length);
+			askQuestion(sender, engineering[idx][question]);
+		default:
+			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+	}
 }
 
 
@@ -123,11 +140,18 @@ function processPostback(event){
 		case "change_category":
 			sendCategories(sender);
 			break;
+		case "random":
+			var cat = categories[Math.floor(Math.random() * categories.length)];
+			getQuestion(sender, cat);
+		case "correct":
+			break;
+		case "wrong":
+			break;
 		case "about":
 			sendAPI(sender, require('./json/about_doum.json'));
 			break;
 		default:
-			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+			getQuestion(sender, payload);
 	}
 }
 
@@ -139,10 +163,7 @@ function processMessage(event){
 			sendCategories(sender);
 			break;
 		case "answer":
-			chooseAnswer(sender);
-			break;
-		case "test":
-			sendAPI(sender, { text: getQuestion("history") });
+			sendSa7WalaGhalat(sender);
 			break;
 		default:
 			sendAPI(sender, { text: text.substring(0, 200) });
