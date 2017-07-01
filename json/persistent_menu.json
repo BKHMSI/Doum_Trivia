@@ -16,11 +16,6 @@
       "type": "postback",
       "title": "عن دوم",
       "payload":"about"
-    },
-    {
-      "type":"postback",
-      "title":"Like Us",
-      "payload":"like"
     }
   ]
 }
