@@ -91,20 +91,21 @@ function sendAPI(sender, msg){
 // function chooseAnswer(sender){
 // 	let message = {
 // 		"text":"صح ولا غلط",
-// 		"quick_replies":[
-// 			{
-// 				"content_type":"text",
-// 				"title":"غلط",
-// 				"payload":"wrong",
-// 				"image_url":"http://www.thepointless.com/images/reddot.jpg"
-// 			},
-// 			{
-// 				"content_type":"text",
-// 				"title":"صح",
-// 				"payload":"correct",
-// 				"image_url":"http://i.imgur.com/g2n3G3A.jpg"
-// 			}
-// 		]
+// 		"quick_replies":
+// 			[
+// 				{
+// 					"content_type":"text",
+// 					"title":"غلط",
+// 					"payload":"wrong",
+// 					"image_url":"http://www.thepointless.com/images/reddot.jpg"
+// 				},
+// 				{
+// 					"content_type":"text",
+// 					"title":"صح",
+// 					"payload":"correct",
+// 					"image_url":"http://i.imgur.com/g2n3G3A.jpg"
+// 				}
+// 			]
 // 	};
 // 	sendAPI(sender, message);
 // }
@@ -183,28 +184,28 @@ function sendAPI(sender, msg){
 // 	});
 // }
 
-// app.post('/webhook/', function (req, res) {
-//     let messaging_events = req.body.entry[0].messaging;
-//     for (let i = 0; i < messaging_events.length; i++) {
-//       let event = req.body.entry[0].messaging[i];
-//       let sender = event.sender.id;
-//       if (event.message && event.message.text) {
-//   	    let text = event.message.text;
-//   	    if (text === "category")
-//   		    sendCategories(sender);
-// 		else if( text == "answer")
-// 			chooseAnswer(sender);
-// 		else if( text == "test")
-// 			sendAPI(sender, { text: getQuestion('history') });
-// 		else
-//   	    	sendAPI(sender, { text: text.substring(0, 200) });
-//       }
-//       if (event.postback) {
-// 		processPostback(event);
-//       }
-//     }
-//     res.sendStatus(200);
-// });
+app.post('/webhook/', function (req, res) {
+    let messaging_events = req.body.entry[0].messaging;
+    for (let i = 0; i < messaging_events.length; i++) {
+      let event = req.body.entry[0].messaging[i];
+      let sender = event.sender.id;
+      if (event.message && event.message.text) {
+  	    let text = event.message.text;
+  	    if (text === "category")
+  		    sendCategories(sender);
+		else if( text == "answer")
+			chooseAnswer(sender);
+		else if( text == "test")
+			sendAPI(sender, { text: getQuestion('history') });
+		else
+  	    	sendAPI(sender, { text: text.substring(0, 200) });
+      }
+      if (event.postback) {
+		processPostback(event);
+      }
+    }
+    res.sendStatus(200);
+});
 
 // function processPostback(event){
 // 	let text = JSON.stringify(event.postback);
