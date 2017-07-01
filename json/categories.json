@@ -6,7 +6,7 @@
             "elements": [{
                 "title": "مشكل",
                 "subtitle": "!اختبر معلوماتك في كل حاجة",
-                "image_url": "https://scontent-mrs1-1.xx.fbcdn.net/v/t31.0-8/19453000_434291670285571_891105082290209342_o.png?oh=71d662e34d12e948f35e854a62ba1896&oe=59E1E980",
+                "image_url": "./images/app.png",
                 "buttons": [{
                     "type": "postback",
                     "title": "اختار",

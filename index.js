@@ -92,7 +92,7 @@ function chooseAnswer(sender){
 
 function sendCategories(sender) {
     let message = require('./json/categories.json'); 
-	sendAPI(sender, messageData);
+	sendAPI(sender, message);
 }
 
 function getQuestion(category){
