@@ -3,15 +3,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const fs = require('fs');
-var parse = require('csv');
+// const fs = require('fs');
+// var parse = require('csv');
 const app = express();
 
 // MongoDB info
 // const mongoose = require('mongoose');
 // const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,11 +22,6 @@ app.use(bodyParser.json());
 // Index route
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot');
-});
-
-// History route
-app.get('/history', function (req, res) {
-	res.send(getQuestion('history'));
 });
 
 // For Facebook verification
@@ -73,8 +68,6 @@ const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRB
 //         }
 //     });
 // }
-
-
 
 function sendAPI(sender, msg){
     request({
@@ -179,16 +172,16 @@ function sendCategories(sender) {
 	sendAPI(sender, messageData);
 }
 
-function getQuestion(category){
-	var path = "./categories/"+category+".csv";
-	fs.readFile(path, function (err, data) {
-		parse(fileData, {columns: false, trim: true}, function(err, rows) {
-			// Your CSV data is in an array of arrys passed to this callback as rows.
-			if(err) return err;
-			return rows[0][0];
-		})
-	})
-}
+// function getQuestion(category){
+// 	var path = "./categories/"+category+".csv";
+// 	fs.readFile(path, function (err, data) {
+// 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
+// 			// Your CSV data is in an array of arrys passed to this callback as rows.
+// 			if(err) return err;
+// 			return rows[0][0];
+// 		})
+// 	})
+// }
 
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging;
