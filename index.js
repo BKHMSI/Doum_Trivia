@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
 
 // History route
 app.get('/history', function (req, res) {
-	res.send(history[0]["question"] + " " + history.length);
+	res.send(history[0]["question"]);
 });
 
 // For Facebook verification
@@ -119,13 +119,13 @@ function getQuestion(sender, category){
 	switch(category){
 		case "literature":
 			idx = Math.floor(Math.random() * literature.length);
-			askQuestion(sender, literature[idx][question]);
+			askQuestion(sender, literature[idx]["question"]);
 		case "history":
 			idx = Math.floor(Math.random() * history.length);
-			askQuestion(sender, history[idx][question]);
+			askQuestion(sender, history[idx]["question"]);
 		case "engineering":
 			idx = Math.floor(Math.random() * engineering.length);
-			askQuestion(sender, engineering[idx][question]);
+			askQuestion(sender, engineering[idx]["question"]);
 		default:
 			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	}
