@@ -3,6 +3,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
+const fs = require('fs');
+var parse = require('csv');
 const app = express();
 
 // MongoDB info
@@ -43,7 +45,7 @@ app.listen(app.get('port'), function() {
 // facebookThreadAPI('./fb-persistent-menu.json', 'Persistent Menu');
 
 // // mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
-// const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
+const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
 
 // Calls the Facebook graph api to change various bot settings
 // function facebookThreadAPI(jsonFile, cmd){
@@ -170,16 +172,16 @@ function sendCategories(sender) {
 	sendAPI(sender, messageData);
 }
 
-// function getQuestion(category){
-// 	var path = "./categories/"+category+".csv";
-// 	fs.readFile(path, function (err, data) {
-// 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
-// 			// Your CSV data is in an array of arrys passed to this callback as rows.
-// 			if(err) return err;
-// 			return rows[0][0];
-// 		})
-// 	})
-// }
+function getQuestion(category){
+	var path = "./categories/"+category+".csv";
+	fs.readFile(path, function (err, data) {
+		parse(fileData, {columns: false, trim: true}, function(err, rows) {
+			// Your CSV data is in an array of arrys passed to this callback as rows.
+			if(err) return err;
+			return rows[0][0];
+		});
+	});
+}
 
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging;
@@ -202,12 +204,12 @@ app.post('/webhook/', function (req, res) {
       }
     }
     res.sendStatus(200);
-  })
+});
 
-  function processPostback(event){
+function processPostback(event){
 	let text = JSON.stringify(event.postback);
 	var senderId = event.sender.id;
 	var payload = event.postback.payload;
 	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	continue;
-  }
+}
