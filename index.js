@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 
 // For Facebook verification
 app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === "my_voice_is_my_password_verify_me") {
+	if (req.query['hub.verify_token'] === process.env.FB_VERIFICATION_TOKEN) {
 		res.send(req.query['hub.challenge']);
 	}
 	res.send('Error, wrong token');
@@ -45,13 +45,13 @@ app.listen(app.get('port'), function() {
 // facebookThreadAPI('./fb-persistent-menu.json', 'Persistent Menu');
 
 // // mongodb://bkhmsi:sa7walaghalat@ds141242.mlab.com:41242/doum_trivia
-const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRBQFn8aIsVFaAll4hag8fHeYvkaRdeww9Xbxq2Y3X5AY886BnzHYinCwH7BBg1GqZClqdVOuzbfn9TxgTbAAXUH2xGn1g2iyRV8jTPvnjAZDZD";
+const token = process.env.FB_PAGE_TOKEN;
 
 // Calls the Facebook graph api to change various bot settings
 // function facebookThreadAPI(jsonFile, cmd){
 //     // Start the request
 //     request({
-//         url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+token,
+//         url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.FB_PAGE_TOKEN,
 //         method: 'POST',
 //         headers: {'Content-Type': 'application/json'},
 //         form: require(jsonFile)
@@ -72,7 +72,7 @@ const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRB
 function sendAPI(sender, msg){
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: { access_token: token },
+	    qs: { access_token: process.env.FB_PAGE_TOKEN },
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
