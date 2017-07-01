@@ -8,8 +8,8 @@ var parse = require('csv');
 const app = express();
 
 // MongoDB info
-// const mongoose = require('mongoose');
-// const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
+const mongoose = require('mongoose');
+const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
 
 app.set('port', (process.env.PORT || 5000));
 
