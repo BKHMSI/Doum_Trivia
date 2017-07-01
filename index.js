@@ -69,23 +69,23 @@ const token = "EAAJ2s9H6iDoBANJpnARUgd3XvOu172hwxHfC00PHpfAbZBCT8fg4m1V6n4lX8TRB
 //     });
 // }
 
-// function sendAPI(sender, msg){
-//     request({
-// 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-// 	    qs: { access_token: token },
-// 	    method: 'POST',
-// 	    json: {
-// 		    recipient: {id:sender},
-// 		    message: msg,
-// 	    }
-//     }, function(error, response, body) {
-// 	    if (error) {
-// 		    console.log('Error sending messages: ', error);
-// 	    } else if (response.body.error) {
-// 		    console.log('Error: ', response.body.error);
-// 	    }
-//     });
-// }
+function sendAPI(sender, msg){
+    request({
+	    url: 'https://graph.facebook.com/v2.6/me/messages',
+	    qs: { access_token: token },
+	    method: 'POST',
+	    json: {
+		    recipient: {id:sender},
+		    message: msg,
+	    }
+    }, function(error, response, body) {
+	    if (error) {
+		    console.log('Error sending messages: ', error);
+	    } else if (response.body.error) {
+		    console.log('Error: ', response.body.error);
+	    }
+    });
+}
 
 
 // function chooseAnswer(sender){
