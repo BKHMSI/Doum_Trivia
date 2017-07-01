@@ -4,8 +4,23 @@
   "call_to_actions":[
     {
       "type":"postback",
-      "title":"Admin Reset",
-      "payload":"action?POSTBACKHERE"
+      "title":"غير المجال",
+      "payload":"change_category"
+    },
+    {
+      "type":"postback",
+      "title":"مساعدة",
+      "payload":"help"
+    },
+    {
+      "type": "postback",
+      "title": "عن دوم",
+      "payload":"about"
+    },
+    {
+      "type":"postback",
+      "title":"Like Us",
+      "payload":"like"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+    "text":"صح ولا غلط",
+    "quick_replies":[
+        {
+            "content_type":"text",
+            "title":"غلط",
+            "payload":"wrong",
+            "image_url":"http://www.thepointless.com/images/reddot.jpg"
+        },
+        {
+            "content_type":"text",
+            "title":"صح",
+            "payload":"correct",
+            "image_url":"http://i.imgur.com/g2n3G3A.jpg"
+        }
+    ]
+}

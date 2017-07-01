@@ -3,7 +3,7 @@
   "thread_state":"new_thread",
   "call_to_actions":[
     {
-      "payload":"action?POSTBACKHERE"
+      "payload":"get_started"
     }
   ]
 }

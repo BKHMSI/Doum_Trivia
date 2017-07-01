@@ -86,87 +86,13 @@ function sendAPI(sender, msg){
 
 
 function chooseAnswer(sender){
-	let message = {
-		"text":"صح ولا غلط",
-		"quick_replies":
-			[
-				{
-					"content_type":"text",
-					"title":"غلط",
-					"payload":"wrong",
-					"image_url":"http://www.thepointless.com/images/reddot.jpg"
-				},
-				{
-					"content_type":"text",
-					"title":"صح",
-					"payload":"correct",
-					"image_url":"http://i.imgur.com/g2n3G3A.jpg"
-				}
-			]
-	};
+	let message = require('./json/choose_answer.json')
 	sendAPI(sender, message);
 }
 
 
 function sendCategories(sender) {
-    let messageData = {
-	    "attachment": {
-		    "type": "template",
-		    "payload": {
-				"template_type": "generic",
-			    "elements": [{
-					"title": "مشكل",
-				    "subtitle": "!اختبر معلوماتك في كل حاجة",
-				    "image_url": "https://scontent-mrs1-1.xx.fbcdn.net/v/t31.0-8/19453000_434291670285571_891105082290209342_o.png?oh=71d662e34d12e948f35e854a62ba1896&oe=59E1E980",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "random",
-				    }],
-			    }, 
-				{
-					"title": "تاريخ",
-				    "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
-				    "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "history",
-				    }],
-			    }, 
-				{
-					"title": "أدب",
-				    "subtitle": "!اختبر معلوماتك في الأدب",
-				    "image_url": "http://az616578.vo.msecnd.net/files/2017/01/14/636200150034011507-1107693164_EP%20-%20Can%20Literature%20Teach%20Business.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "literature",
-				    }],
-				}, 
-				{
-				    "title": "هندسة",
-				    "subtitle":  "شوف تعرف اد ايه في الهندسة؟",
-				    "image_url": "http://www.copperstateengineering.com/wp-content/uploads/2016/01/engineering-blueprint.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "engineering",
-				    }],
-			    },
-				{
-					"title": "تكنولوجيا",
-				    "subtitle": "!اختبر معلوماتك في التكنولوجيا",
-				    "image_url": "http://i.huffpost.com/gen/1928539/images/o-BRAIN-TECHNOLOGY-facebook.jpg",
-				    "buttons": [{
-					    "type": "postback",
-					    "title": "اختار",
-					    "payload": "technology",
-				    }],
-				}]
-		    }
-	    }
-    };
+    let message = require('./json/categories.json'); 
 	sendAPI(sender, messageData);
 }
 
@@ -179,6 +105,13 @@ function getQuestion(category){
 			return rows[0][0];
 		});
 	});
+}
+
+function processPostback(event){
+	let text = JSON.stringify(event.postback);
+	var senderId = event.sender.id;
+	var payload = event.postback.payload;
+	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 }
 
 app.post('/webhook/', function (req, res) {
@@ -199,15 +132,8 @@ app.post('/webhook/', function (req, res) {
       }
       if (event.postback) {
 		processPostback(event);
+		continue;
       }
     }
     res.sendStatus(200);
 });
-
-// function processPostback(event){
-// 	let text = JSON.stringify(event.postback);
-// 	var senderId = event.sender.id;
-// 	var payload = event.postback.payload;
-// 	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
-// 	continue;
-// }
