@@ -173,16 +173,16 @@ function sendCategories(sender) {
 	sendAPI(sender, messageData);
 }
 
-// function getQuestion(category){
-// 	var path = "./categories/"+category+".csv";
-// 	fs.readFile(path, function (err, data) {
-// 		parse(fileData, {columns: false, trim: true}, function(err, rows) {
-// 			// Your CSV data is in an array of arrys passed to this callback as rows.
-// 			if(err) return err;
-// 			return rows[0][0];
-// 		});
-// 	});
-// }
+function getQuestion(category){
+	var path = "./categories/"+category+".csv";
+	fs.readFile(path, function (err, data) {
+		parse(fileData, {columns: false, trim: true}, function(err, rows) {
+			// Your CSV data is in an array of arrys passed to this callback as rows.
+			if(err) return err;
+			return rows[0][0];
+		});
+	});
+}
 
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging;
