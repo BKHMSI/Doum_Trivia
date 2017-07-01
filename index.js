@@ -38,11 +38,11 @@ app.listen(app.get('port'), function() {
 });
 
 // Set FB bot greeting text
-// facebookThreadAPI('./fb-greeting-text.json', 'Greating Text');
-// // Set FB bot get started button
-// facebookThreadAPI('./fb-get-started-button.json', 'Get Started Button');
-// // Set FB bot persistent menu
-// facebookThreadAPI('./fb-persistent-menu.json', 'Persistent Menu');
+facebookThreadAPI('./json/greeting.json', 'Greating Text');
+// Set FB bot get started button
+facebookThreadAPI('./json/get_started.json', 'Get Started Button');
+// Set FB bot persistent menu
+facebookThreadAPI('./json/persistent_menu.json', 'Persistent Menu');
 
 // Calls the Facebook graph api to change various bot settings
 function facebookThreadAPI(jsonFile, cmd){
