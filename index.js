@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const fs = require('fs');
 var parse = require('csv');
+var csv = require('fast-csv')
 const app = express();
 
 // MongoDB info
@@ -102,12 +103,10 @@ function sendCategories(sender) {
 
 function getQuestion(category){
 	var path = "./categories/"+category+".csv";
-	fs.readFile(path, function (err, data) {
-		parse(fileData, {columns: false, trim: true}, function(err, rows) {
-			// Your CSV data is in an array of arrys passed to this callback as rows.
-			if(err) return err;
-			return rows[0][0];
-		});
+	csv.fromPath(path).on("data", function(data){
+		console.log(data);
+	}).on("end", function(){
+		console.log("done");
 	});
 }
 
