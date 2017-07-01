@@ -230,6 +230,7 @@ function processPostback(event){
 	let text = JSON.stringify(event.postback);
 	var sender = event.sender.id;
 	var payload = event.postback.payload;
+	console.log(payload);
 	switch(payload){
 		case "get_started":
 			sendGetStarted(sender);
