@@ -207,10 +207,10 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200);
 });
 
-function processPostback(event){
-	let text = JSON.stringify(event.postback);
-	var senderId = event.sender.id;
-	var payload = event.postback.payload;
-	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
-	continue;
-}
+// function processPostback(event){
+// 	let text = JSON.stringify(event.postback);
+// 	var senderId = event.sender.id;
+// 	var payload = event.postback.payload;
+// 	sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+// 	continue;
+// }
