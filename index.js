@@ -27,7 +27,9 @@ app.get('/', function (req, res) {
 
 // History route
 app.get('/history', function (req, res) {
-	getQuestion("history");
+	var history = require("./categories/history.csv");
+	console.log(history);
+	//getQuestion("history");
 });
 
 // For Facebook verification
@@ -42,6 +44,7 @@ app.get('/webhook/', function (req, res) {
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
+
 
 // Set FB bot greeting text
 facebookThreadAPI('./json/greeting.json', 'Greating Text');
@@ -109,6 +112,7 @@ function getQuestion(category){
 		console.log("done");
 	});
 }
+
 
 function processPostback(event){
 	let text = JSON.stringify(event.postback);
