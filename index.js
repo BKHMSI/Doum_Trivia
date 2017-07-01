@@ -8,6 +8,9 @@ var parse = require('csv');
 var csv = require('fast-csv')
 const app = express();
 
+
+// Q&A
+var history = require('./categories/history.json');
 // MongoDB info
 // const mongoose = require('mongoose');
 // const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
@@ -22,14 +25,12 @@ app.use(bodyParser.json());
 
 // Index route
 app.get('/', function (req, res) {
-	res.send('Hello world, I am a chat bot');
+	res.send('Hello World! I am a Game. I ask questions. Questions from different fields. People respond. I correct. Who am I?');
 });
 
 // History route
 app.get('/history', function (req, res) {
-	var history = require("./categories/history.csv");
-	console.log(history);
-	//getQuestion("history");
+	res.send(history[0]["question"]);
 });
 
 // For Facebook verification
