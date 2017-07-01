@@ -120,12 +120,15 @@ function getQuestion(sender, category){
 		case "literature":
 			idx = Math.floor(Math.random() * literature.length);
 			askQuestion(sender, literature[idx]["question"]);
+			break;
 		case "history":
 			idx = Math.floor(Math.random() * history.length);
 			askQuestion(sender, history[idx]["question"]);
+			break;
 		case "engineering":
 			idx = Math.floor(Math.random() * engineering.length);
 			askQuestion(sender, engineering[idx]["question"]);
+			break;
 		default:
 			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	}
