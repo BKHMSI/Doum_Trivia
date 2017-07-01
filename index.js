@@ -246,6 +246,7 @@ function processPostback(event){
 			break;
 		case "wrong":
 			checkAnswer(sender, 0);
+			sendAPI(sender, require('./json/about_doum.json'));
 			break;
 		case "about":
 			sendAPI(sender, require('./json/about_doum.json'));
@@ -278,7 +279,7 @@ app.post('/webhook/', function (req, res) {
       if(event.message && event.message.text)
 	  	processMessage(event);
 
-      if (event.postback) 
+      if(event.postback) 
 		processPostback(event);
     }
     res.sendStatus(200);
