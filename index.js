@@ -4,8 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const fs = require('fs');
-var parse = require('csv');
-var csv = require('fast-csv')
 const app = express();
 
 
@@ -16,8 +14,21 @@ var literature = require('./categories/literature.json');
 var engineering = require('./categories/engineering.json');
 
 // MongoDB info
-// const mongoose = require('mongoose');
-// const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
+var GameSchema = new Schema({
+  user_id: {type: String},
+  category: {type: String},
+  score: {type: Number},
+  count: {type: Number},
+  total_score: {type: Number}
+});
+
+var db = mongoose.connect(process.env.MONGODB_URI);
+var Game = mongoose.model("Game", GameSchema);
+
+
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -32,8 +43,8 @@ app.get('/', function (req, res) {
 	res.send('Hello World! I am a Game. I ask questions. Questions from different fields. People respond. I correct. Who am I?');
 });
 
-// History route
-app.get('/history', function (req, res) {
+// Test route
+app.get('/test', function (req, res) {
 	res.send(history[0]["question"]);
 });
 
@@ -109,8 +120,19 @@ function sendCategories(sender) {
 	sendAPI(sender, message);
 }
 
-function askQuestion(sender, question){
+// function updateDB(sender, category){
+// 	var query = {user_id: sender};
+// 	Game.findOne(query)
+// 	var update = {
+// 		user_id: sender,
+
+// 	}
+// 	Game.findOneAndUpdate
+// }
+
+function askQuestion(sender, question, category){
 	sendAPI(sender, { text:  "س: " + question });
+	//updateDB(sender, category);
 	sendSa7WalaGhalat(sender);
 }
 
@@ -119,19 +141,25 @@ function getQuestion(sender, category){
 	switch(category){
 		case "literature":
 			idx = Math.floor(Math.random() * literature.length);
-			askQuestion(sender, literature[idx]["question"]);
+			askQuestion(sender, literature[idx]["question"], category);
 			break;
 		case "history":
 			idx = Math.floor(Math.random() * history.length);
-			askQuestion(sender, history[idx]["question"]);
+			askQuestion(sender, history[idx]["question"], category);
 			break;
 		case "engineering":
 			idx = Math.floor(Math.random() * engineering.length);
-			askQuestion(sender, engineering[idx]["question"]);
+			askQuestion(sender, engineering[idx]["question"], category);
 			break;
 		default:
 			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
 	}
+}
+
+function sendGetStarted(sender){
+	var greeting = "";
+	sendAPI(sender, { text: greeting });
+	sendCategories(sender);
 }
 
 
@@ -140,12 +168,16 @@ function processPostback(event){
 	var sender = event.sender.id;
 	var payload = event.postback.payload;
 	switch(payload){
+		case "get_started":
+			sendGetStarted(sender);
+			break;
 		case "change_category":
 			sendCategories(sender);
 			break;
 		case "random":
 			var cat = categories[Math.floor(Math.random() * categories.length)];
 			getQuestion(sender, cat);
+			break;
 		case "correct":
 			break;
 		case "wrong":
@@ -181,10 +213,8 @@ app.post('/webhook/', function (req, res) {
       if(event.message && event.message.text)
 	  	processMessage(event);
 
-      if (event.postback) {
+      if (event.postback) 
 		processPostback(event);
-		continue;
-      }
     }
     res.sendStatus(200);
 });
