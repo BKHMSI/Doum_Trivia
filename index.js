@@ -11,7 +11,7 @@ const app = express();
 // const mongoose = require('mongoose');
 // const User = mongoose.model('User', {_id: String, name: String, profile_image_url: String, phone_number: String, current_state: String});
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 3000));
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
