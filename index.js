@@ -265,6 +265,12 @@ function processMessage(event){
 		case "answer":
 			sendSa7WalaGhalat(sender);
 			break;
+		case "correct":
+			sendAPI(sender, require('./json/about_doum.json'));
+			break;
+		case "صح":
+			sendAPI(sender, { text: "Hello" });
+			break;
 		default:
 			sendAPI(sender, { text: text.substring(0, 200) });
 	}
