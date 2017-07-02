@@ -6,7 +6,6 @@ const request = require('request');
 const fs = require('fs');
 const app = express();
 
-
 // Q&A
 var categories = ["history", "literature", "engineering"];
 var history = require('./categories/history.json');
@@ -28,8 +27,6 @@ var GameSchema = new Schema({
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 var Game = mongoose.model("Game", GameSchema);
-
-
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -61,7 +58,6 @@ app.get('/webhook/', function (req, res) {
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'));
 });
-
 
 // Set FB bot greeting text
 facebookThreadAPI('./json/greeting.json', 'Greating Text');

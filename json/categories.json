@@ -4,8 +4,8 @@
         "payload": {
             "template_type": "generic",
             "elements": [{
-                "title": "مشكل",
-                "subtitle": "!اختبر معلوماتك في كل حاجة",
+                "title": "أسئلة في كل المجالات",
+                "subtitle": "اختبر معلوماتك واجب بصح أو غلط",
                 "image_url": "https://scontent-mrs1-1.xx.fbcdn.net/v/t31.0-8/19453000_434291670285571_891105082290209342_o.png?oh=71d662e34d12e948f35e854a62ba1896&oe=59E1E980",
                 "buttons": [{
                     "type": "postback",
@@ -15,7 +15,7 @@
             }, 
             {
                 "title": "تاريخ",
-                "subtitle": "!اختبر معلوماتك في تاريخ مصر والعالم",
+                "subtitle": "اختبر معلوماتك في تاريخ مصر والعالم",
                 "image_url": "http://images2.fanpop.com/image/photos/14600000/egypt-egyptian-history-14635054-500-375.jpg",
                 "buttons": [{
                     "type": "postback",
@@ -25,7 +25,7 @@
             }, 
             {
                 "title": "أدب",
-                "subtitle": "!اختبر معلوماتك في الأدب",
+                "subtitle": "اختبر معلوماتك في الأدب",
                 "image_url": "http://az616578.vo.msecnd.net/files/2017/01/14/636200150034011507-1107693164_EP%20-%20Can%20Literature%20Teach%20Business.jpg",
                 "buttons": [{
                     "type": "postback",
@@ -35,8 +35,8 @@
             }, 
             {
                 "title": "هندسة",
-                "subtitle":  "شوف تعرف اد ايه في الهندسة؟",
-                "image_url": "http://www.copperstateengineering.com/wp-content/uploads/2016/01/engineering-blueprint.jpg",
+                "subtitle":  "اختبر معلوماتك في الهندسة",
+                "image_url": "https://img-s3.onedio.com/id-5804d35227a2c1a00cd90e48/rev-0/raw/s-edd56c88ce38f5a0166f68b5e95131f04743a6c4.jpg",
                 "buttons": [{
                     "type": "postback",
                     "title": "العب",
@@ -45,7 +45,7 @@
             },
             {
                 "title": "تكنولوجيا",
-                "subtitle": "!اختبر معلوماتك في التكنولوجيا",
+                "subtitle": "اختبر معلوماتك في التكنولوجيا",
                 "image_url": "http://i.huffpost.com/gen/1928539/images/o-BRAIN-TECHNOLOGY-facebook.jpg",
                 "buttons": [{
                     "type": "postback",

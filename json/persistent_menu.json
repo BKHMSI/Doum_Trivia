@@ -4,13 +4,8 @@
   "call_to_actions":[
     {
       "type":"postback",
-      "title":"غير المجال",
+      "title":"القائمة الرئيسية",
       "payload":"change_category"
-    },
-    {
-      "type":"postback",
-      "title":"مساعدة",
-      "payload":"help"
     },
     {
       "type": "postback",
