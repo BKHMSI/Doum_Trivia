@@ -1,16 +1,16 @@
 {
-"attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"button",
-        "text":"صح أو غلط!\n لعبة مؤسسة دوم للثقافة. ادخلوا معنا في عوالم التاريخ والأدب والجغرافيا والسينما ومجالات أخري كثيرة",
-        "buttons":[
-          {
-            "type":"postback",
-            "title":"ابدأ",
-            "payload":"start_game"
-          }
-        ]
-      }
+    "attachment":{
+        "type":"template",
+        "payload":{
+            "template_type":"button",
+            "text":"صح أو غلط!\n لعبة مؤسسة دوم للثقافة. ادخلوا معنا في عوالم التاريخ والأدب والجغرافيا والسينما ومجالات أخري كثيرة",
+            "buttons":[
+                {
+                    "type":"postback",
+                    "title":"ابدأ",
+                    "payload":"start_game"
+                }
+            ]
+        }
     }
 }

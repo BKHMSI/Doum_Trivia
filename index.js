@@ -107,6 +107,11 @@ function sendAPI(sender, msg){
 }
 
 
+function sendGetStarted(sender){
+	var message = require('./json/about_game.json');
+	sendAPI(sender, message);
+}
+
 function sendSa7WalaGhalat(sender){
 	let message = require('./json/choose_answer.json')
 	sendAPI(sender, message);
@@ -162,11 +167,6 @@ function getQuestion(sender, category, obj, isCorrect){
 	askQuestion(sender, question, category);
 }
 
-function sendGetStarted(sender){
-	var message = require('./json/about_game.json');
-	sendAPI(sender, message);
-	sendCategories(sender);
-}
 
 function sendFinalResult(sender){
 	console.log("Final Result");
