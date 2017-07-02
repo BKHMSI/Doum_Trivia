@@ -102,7 +102,10 @@ function sendAPI(sender, msg){
 		    console.log('Error sending messages: ', error);
 	    } else if (response.body.error) {
 		    console.log('Error: ', response.body.error);
-	    }
+	    }else{
+			if(msg.text[0] == 'س')
+				sendSa7WalaGhalat(sender)
+		}
     });
 }
 
@@ -124,7 +127,6 @@ function sendCategories(sender) {
 
 function askQuestion(sender, question, category){
 	sendAPI(sender, { text:  "س: " + question });
-	sendSa7WalaGhalat(sender);
 }
 
 function getQuestion(sender, category, obj, isCorrect){
@@ -241,12 +243,6 @@ function processPostback(event){
 			var cat = categories[Math.floor(Math.random() * categories.length)];
 			getQuestion(sender, cat, null, false);
 			break;
-		case "correct":
-			checkAnswer(sender, 1);
-			break;
-		case "wrong":
-			sendAPI(sender, require('./json/about_doum.json'));
-			break;
 		case "about":
 			sendAPI(sender, require('./json/about_doum.json'));
 			break;
@@ -265,11 +261,11 @@ function processMessage(event){
 		case "answer":
 			sendSa7WalaGhalat(sender);
 			break;
-		case "correct":
-			sendAPI(sender, require('./json/about_doum.json'));
-			break;
 		case "صح":
-			sendAPI(sender, { text: "Hello" });
+			checkAnswer(sender, 1);
+			break;
+		case "غلط":
+			checkAnswer(sender, 0);
 			break;
 		default:
 			sendAPI(sender, { text: text.substring(0, 200) });
