@@ -9,7 +9,7 @@
     },
     {
       "type": "postback",
-      "title": "عن دوم",
+      "title": "عن مؤسسة دوم",
       "payload":"about"
     }
   ]
