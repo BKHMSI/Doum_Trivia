@@ -104,7 +104,7 @@ function sendAPI(sender, msg){
 		    console.log('Error: ', response.body.error);
 	    }else{
 			if(msg.text[0] == 'س')
-				sendSa7WalaGhalat(sender)
+				sendSa7WalaGhalat(sender);
 		}
     });
 }
