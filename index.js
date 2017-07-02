@@ -176,20 +176,18 @@ function sendFinalResult(sender){
 
 function sendCorrection(sender, correction, isCorrect, obj){
 	if(isCorrect){
-		sendAPI(sender, {text: "👍 إجابة صحيحة"});
+		var message = require('./json/correct.json');
 		if(correction.trim() != "")
-			sendAPI(sender, {text: correction});
+			message.attachment.payload.elements[0].subtitle = correction;
+
+		sendAPI(sender, message);
 		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score+1) + "/5"});
 	}else{
-		sendAPI(sender, {text: "✗ إجابة خاطئة"});
+		var message = require('./json/wrong.json');
 		if(correction.trim() != "")
-			sendAPI(sender, {text: correction});
-		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score) + "/5"});
-	}
-	if(obj.count+1 == 5){
-		sendFinalResult(sender);
-	}else{
-		getQuestion(sender, obj.category, obj, isCorrect);
+			message.attachment.payload.elements[0].subtitle = correction;
+		sendAPI(sender, message);
+		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score+1) + "/5"});
 	}
 }
 
@@ -238,6 +236,9 @@ function processPostback(event){
 			break;
 		case "change_category":
 			sendCategories(sender);
+			break;
+		case "next_q":
+			getQuestion(sender, "history", null, false);
 			break;
 		case "random":
 			var cat = categories[Math.floor(Math.random() * categories.length)];
