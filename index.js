@@ -163,8 +163,8 @@ function getQuestion(sender, category, obj, isCorrect){
 }
 
 function sendGetStarted(sender){
-	var greeting = "";
-	sendAPI(sender, { text: greeting });
+	var message = require('./json/about_game.json');
+	sendAPI(sender, message);
 	sendCategories(sender);
 }
 
@@ -231,6 +231,9 @@ function processPostback(event){
 		case "get_started":
 			sendGetStarted(sender);
 			break;
+		case "start_game":
+			sendCategories(sender);
+			break;
 		case "change_category":
 			sendCategories(sender);
 			break;
@@ -242,7 +245,6 @@ function processPostback(event){
 			checkAnswer(sender, 1);
 			break;
 		case "wrong":
-			checkAnswer(sender, 0);
 			sendAPI(sender, require('./json/about_doum.json'));
 			break;
 		case "about":
