@@ -5,12 +5,14 @@
             "template_type": "generic",
             "elements": [{
                 "title": "النتيجة",
-                "subtitle": "مؤسسة ثقافية غير ربحية، غايتها العمل على دعم العقلية النقدية في المجتمع المصري",
-                "image_url": "https://scontent-cai1-1.xx.fbcdn.net/v/t1.0-9/16939481_1120429668103931_6153909737272683036_n.jpg?oh=f8dea7fb777b9af07cf505305410445b&oe=5A0AAE79",
+                "subtitle": "",
+                "image_url": "",
                 "buttons": [{
                     "type": "postback",
                     "title": "ابدأ من جديد",
                     "payload":"start_game"
+                },{
+                    "type":"element_share"
                 }]
             }]
         }

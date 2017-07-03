@@ -123,8 +123,35 @@ function sendCategories(sender) {
 	sendAPI(sender, message);
 }
 
+
 function sendFinalResult(sender, score){
-    let message = require('./json/final_result.json'); 
+    let message = require('./json/final_result.json');
+	switch(score){
+		case 0: 
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/kqX2qF/Screen_Shot_2017_07_03_at_8_37_21_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+		case 1:
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/jScrja/Screen_Shot_2017_07_03_at_8_37_36_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+		case 2:
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/nrztxv/Screen_Shot_2017_07_03_at_8_37_48_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+		case 3:
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/h05Bja/Screen_Shot_2017_07_03_at_8_37_57_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+		case 4:
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/daVBja/Screen_Shot_2017_07_03_at_8_38_06_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+		case 5:
+			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/hGbj4a/Screen_Shot_2017_07_03_at_8_38_14_PM.png";
+			message.attachment.payload.elements[0].subtitle = "";
+			break;
+	} 
 	sendAPI(sender, message);
 }
 
@@ -161,13 +188,14 @@ function getQuestion(sender, category, isFirst, isRandom){
 			}else{
 				var cat = "";
 				if(obj.count == 5){
-					sendFinalResult(sender);
+					sendFinalResult(sender, obj.score);
 				}else{
 					if(obj.is_random){
 						cat = categories[getRandom(categories)];
 					}else{
 						cat = obj.category;
 					}
+
 					var idx = getRandom(data[cat]);
 					var question = data[cat][idx]["question"];
 					var options = {upsert: true};
