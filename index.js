@@ -188,7 +188,7 @@ function sendCorrection(sender, correction, isCorrect, score){
 		"https://i.ytimg.com/vi/dYWFp9Rjx7g/hqdefault.jpg",
 		"https://i.ytimg.com/vi/vVLgDsxL7BM/mqdefault.jpg",
 		"https://i.ytimg.com/vi/z2AS_oBqbHQ/hqdefault.jpg",
-		"http://static.yafeta.com/evs/d/0/102/ev1026354/org/icon.jpg",
+		"http://static.yafeta.com/evs/d/0/102/ev1026354/org/icon.jpg"
 	];
 
 	var w_photos = [
