@@ -4,9 +4,9 @@
         "payload": {
             "template_type": "generic",
             "elements": [{
-                "title": "👍 إجابة صحيحة",
+                "title": "إجابة صحيحة 👍",
                 "subtitle": "",
-                "image_url": "http://i.makeagif.com/media/9-16-2015/kDj6u4.gif",
+                "image_url": "",
                 "buttons": [{
                     "type": "postback",
                     "title": "السؤال التالي",
