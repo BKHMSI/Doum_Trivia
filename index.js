@@ -8,9 +8,7 @@ const app = express();
 
 // Q&A
 var categories = ["history", "literature", "engineering"];
-var history = require('./categories/history.json');
-var literature = require('./categories/literature.json');
-var engineering = require('./categories/engineering.json');
+var data = require('./categories/data.json');
 
 // MongoDB info
 var mongoose = require("mongoose");
@@ -130,43 +128,32 @@ function askQuestion(sender, question, category){
 }
 
 function getQuestion(sender, category, obj, isCorrect){
-	var idx = 0;
-	var question = "";
-
-	switch(category){
-		case "literature":
-			idx = Math.floor(Math.random() * literature.length);
-			question = literature[idx]["question"];
-			break;
-		case "history":
-			idx = Math.floor(Math.random() * history.length);
-			question = history[idx]["question"];
-			break;
-		case "engineering":
-			idx = Math.floor(Math.random() * engineering.length);
-			question = engineering[idx]["question"];
-			break;
-		default:
-			sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
-	}
-
-	var query = {user_id: sender};
-	var options = {upsert: true};
-	var update = {
-		user_id: sender,
-		category: category,
-		q_id: idx,
-		score: obj == null ? 0 : (isCorrect ? obj.score+1:obj.score),
-		count: obj == null ? 0 : obj.count + 1,
-		total_score: 0
-	}
 	
-	Game.findOneAndUpdate(query, update, options, function(err, game){
-		if(err)
-			console.log("Database Error: "+err);
-	});
+	if(categories.indexOf(category) != -1){
+		var size = data[category].length;
+		var idx = Math.floor(Math.random() * size);
+		var question = data[category][idx]["question"];
 
-	askQuestion(sender, question, category);
+		var query = {user_id: sender};
+		var options = {upsert: true};
+		var update = {
+			user_id: sender,
+			category: category,
+			q_id: idx,
+			score: obj == null ? 0 : (isCorrect ? obj.score+1:obj.score),
+			count: obj == null ? 0 : obj.count + 1,
+			total_score: 0
+		}
+		
+		Game.findOneAndUpdate(query, update, options, function(err, game){
+			if(err)
+				console.log("Database Error: "+err);
+		});
+
+		askQuestion(sender, question, category);
+	}else{
+		sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+	}
 }
 
 
@@ -175,6 +162,18 @@ function sendFinalResult(sender){
 }
 
 function sendCorrection(sender, correction, isCorrect, obj){
+	var c_photos = [
+		"https://i.ytimg.com/vi/dYWFp9Rjx7g/hqdefault.jpg",
+		"https://i.ytimg.com/vi/vVLgDsxL7BM/mqdefault.jpg",
+		"https://i.ytimg.com/vi/z2AS_oBqbHQ/hqdefault.jpg",
+		"http://static.yafeta.com/evs/d/0/102/ev1026354/org/icon.jpg",
+	];
+
+	var w_photos = [
+		"https://i.ytimg.com/vi/QMpKvBd0kP8/hqdefault.jpg",
+		"https://1.bp.blogspot.com/-G-Qf7qeEYzA/WDAYz5xS2hI/AAAAAAAAAbY/kjoCJD4YLVA94AG7JhpuwMaZcnx7YMEPQCLcB/s320/015%2B-%2BXrmwi15.jpg",
+
+	]
 	if(isCorrect){
 		var message = require('./json/correct.json');
 		if(correction.trim() != "")
@@ -186,8 +185,9 @@ function sendCorrection(sender, correction, isCorrect, obj){
 		var message = require('./json/wrong.json');
 		if(correction.trim() != "")
 			message.attachment.payload.elements[0].subtitle = correction;
+
 		sendAPI(sender, message);
-		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score+1) + "/5"});
+		sendAPI(sender, {text: "نتيجتك الآن: "+ (obj.score) + "/5"});
 	}
 }
 
@@ -200,21 +200,8 @@ function checkAnswer(sender, answer){
 		if(err){
 			console.log("Databse Error: " + err);
 		}else{
-			switch(obj.category){
-				case "literature":
-					real = literature[obj.q_id]["answer"];
-					correction = literature[obj.q_id]["correction"];
-					break;
-				case "history":
-					real = history[obj.q_id]["answer"];
-					correction = history[obj.q_id]["correction"];
-					break;
-				case "engineering":
-					real = engineering[obj.q_id]["answer"];
-					correction = engineering[obj.q_id]["correction"]
-					break;
-			}
-			
+			real = data[category][obj.q_id]["answer"];
+			correction = data[category][obj.q_id]["correction"];			
 			isCorrect = real == answer;
 			sendCorrection(sender, correction, isCorrect, obj);
 		}
