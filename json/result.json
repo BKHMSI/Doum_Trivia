@@ -1,0 +1,25 @@
+{
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "generic",
+            "elements": [{
+                "title": "",
+                "subtitle": "",
+                "image_url": "",
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": "السؤال التالي",
+                        "payload": "next_q"
+                    },
+                    {
+                        "type": "postback",
+                        "title": "التصويب",
+                        "payload": "correction"
+                    }
+                ]
+            }]
+        }
+    }
+}

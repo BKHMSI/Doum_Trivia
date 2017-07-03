@@ -1,0 +1,16 @@
+{
+    "attachment":{
+        "type":"template",
+        "payload":{
+            "template_type":"button",
+            "text":"",
+            "buttons":[
+                {
+                    "type":"postback",
+                    "title":"السؤال التالي",
+                    "payload":"next_q"
+                }
+            ]
+        }
+    }
+}

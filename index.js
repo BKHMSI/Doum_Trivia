@@ -108,7 +108,6 @@ function sendAPI(sender, msg){
     });
 }
 
-
 function sendGetStarted(sender){
 	var message = require('./json/about_game.json');
 	sendAPI(sender, message);
@@ -137,7 +136,22 @@ function getRandom(arr){
 	return Math.floor(Math.random() * arr.length);
 }
 
+function sendCorrection(sender){
+	let message = require('./json/correction.json');
+	Game.findOne(query, function(err, obj){
+		if(err){
+			console.log("Databse Error: " + err);
+		}else{
+			var correction = data[obj.category][obj.q_id]["correction"];
+			if(correction.trim() == "")
+				correction = data[obj.category][obj.q_id]["question"];
+			message.attachment.payload.text = correction;
+		}
+	});
+}
+
 function getQuestion(sender, category, isFirst, isRandom){
+	var query = {user_id: sender};
 	if(!isFirst){
 		Game.findOne(query, function(err, obj){
 			if(err){
@@ -153,15 +167,30 @@ function getQuestion(sender, category, isFirst, isRandom){
 						cat = obj.category;
 					}
 					var idx = getRandom(data[cat]);
-					var question = data[cat][idx]["question"];	
-					askQuestion(sender, question, cat);
+					var question = data[cat][idx]["question"];
+					var options = {upsert: true};
+					var update = {
+						user_id: sender,
+						category: obj.category,
+						is_random: obj.is_random,
+						q_id: idx,
+						score: obj.score,
+						count: obj.count,
+						total_score: obj.total_score
+					};
+
+					Game.findOneAndUpdate(query, update, options, function(err, game){
+						if(err)
+							console.log("Database Error: "+err);
+						else 
+							askQuestion(sender, question, cat);
+					});
 				}
 			}
 		});
 	}else if(categories.indexOf(category) != -1){
 		var idx = getRandom(data[category]);
 		var question = data[category][idx]["question"];
-		var query = {user_id: sender};
 		var options = {upsert: true};
 		var update = {
 			user_id: sender,
@@ -185,7 +214,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 	}
 }
 
-function sendCorrection(sender, correction, isCorrect, score){
+function sendResult(sender, correction, isCorrect, score){
 	var c_photos = [
 		"https://i.ytimg.com/vi/dYWFp9Rjx7g/hqdefault.jpg",
 		"https://i.ytimg.com/vi/vVLgDsxL7BM/mqdefault.jpg",
@@ -200,14 +229,16 @@ function sendCorrection(sender, correction, isCorrect, score){
 	];
 
 	if(isCorrect){
-		var message = require('./json/correct.json');
+		var message = require('./json/result.json');
+		message.attachment.payload.elements[0].title = "إجابة صحيحة 👍";
 		if(correction.trim() != "")
 			message.attachment.payload.elements[0].subtitle = correction;
 		message.attachment.payload.elements[0].image_url = c_photos[getRandom(c_photos)];
 		sendAPI(sender, message);
 		sendAPI(sender, {text: "نتيجتك الآن: "+ (score+1) + "/5"});
 	}else{
-		var message = require('./json/wrong.json');
+		var message = require('./json/result.json');
+		message.attachment.payload.elements[0].title = "إجابة خاطئة ✗";
 		if(correction.trim() != "")
 			message.attachment.payload.elements[0].subtitle = correction;
 		message.attachment.payload.elements[0].image_url = w_photos[getRandom(w_photos)];
@@ -246,7 +277,7 @@ function checkAnswerAndUpdate(sender, answer){
 				if(err)
 					console.log("Database Error: "+err);
 				else 
-					sendCorrection(sender, correction, isCorrect, obj.score);
+					sendResult(sender, correction, isCorrect, obj.score);
 			});
 		}
 	});
@@ -269,6 +300,9 @@ function processPostback(event){
 			break;
 		case "next_q":
 			getQuestion(sender, "", false, false);
+			break;
+		case "correction":
+			sendCorrection(sender);
 			break;
 		case "random":
 			var cat = categories[getRandom(categories)];
