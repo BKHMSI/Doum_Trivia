@@ -137,6 +137,7 @@ function getRandom(arr){
 }
 
 function sendCorrection(sender){
+	var query = {user_id: sender};
 	let message = require('./json/correction.json');
 	Game.findOne(query, function(err, obj){
 		if(err){
