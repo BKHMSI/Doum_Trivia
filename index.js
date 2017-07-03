@@ -146,6 +146,7 @@ function sendCorrection(sender){
 			if(correction.trim() == "")
 				correction = data[obj.category][obj.q_id]["question"];
 			message.attachment.payload.text = correction;
+			sendAPI(sender, message);
 		}
 	});
 }
