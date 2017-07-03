@@ -216,7 +216,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 	}
 }
 
-function sendResult(sender, correction, isCorrect, score){
+function sendResult(sender, score, q_id, category, isCorrect){
 	var c_photos = [
 		"https://i.ytimg.com/vi/dYWFp9Rjx7g/hqdefault.jpg",
 		"https://i.ytimg.com/vi/vVLgDsxL7BM/mqdefault.jpg",
@@ -233,16 +233,26 @@ function sendResult(sender, correction, isCorrect, score){
 	if(isCorrect){
 		var message = require('./json/result.json');
 		message.attachment.payload.elements[0].title = "إجابة صحيحة 👍";
-		if(correction.trim() != "")
-			message.attachment.payload.elements[0].subtitle = correction;
+
+		var correction = data[category][q_id]["correction"];
+		if(correction.trim() == "")
+			message.attachment.payload.elements[0].subtitle = data[category][q_id]["question"];
+		else 
+		 	message.attachment.payload.elements[0].subtitle = correction;
+
 		message.attachment.payload.elements[0].image_url = c_photos[getRandom(c_photos)];
 		sendAPI(sender, message);
 		sendAPI(sender, {text: "نتيجتك الآن: "+ (score+1) + "/5"});
 	}else{
 		var message = require('./json/result.json');
 		message.attachment.payload.elements[0].title = "إجابة خاطئة ✗";
-		if(correction.trim() != "")
+
+		var correction = data[category][q_id]["correction"];
+		if(correction.trim() == "")
+			message.attachment.payload.elements[0].subtitle = data[category][q_id]["question"];
+		else 
 			message.attachment.payload.elements[0].subtitle = correction;
+
 		message.attachment.payload.elements[0].image_url = w_photos[getRandom(w_photos)];
 		sendAPI(sender, message);
 		sendAPI(sender, {text: "نتيجتك لسة: "+ (score) + "/5"});
@@ -251,15 +261,13 @@ function sendResult(sender, correction, isCorrect, score){
 
 function checkAnswerAndUpdate(sender, answer){
 	var query = {user_id: sender};
-	var q_id = 0, real = 0;
-	var correction = "";
+	var real = 0;
 	var isCorrect = false;
 	Game.findOne(query, function(err, obj){
 		if(err){
 			console.log("Databse Error: " + err);
 		}else{
 			real = data[obj.category][obj.q_id]["answer"];
-			correction = data[obj.category][obj.q_id]["correction"];			
 			isCorrect = real == answer;
 
 			// Update Score
@@ -279,7 +287,7 @@ function checkAnswerAndUpdate(sender, answer){
 				if(err)
 					console.log("Database Error: "+err);
 				else 
-					sendResult(sender, correction, isCorrect, obj.score);
+					sendResult(sender, obj.score, obj.q_id, obj.category, isCorrect);
 			});
 		}
 	});

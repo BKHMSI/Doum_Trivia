@@ -10,13 +10,13 @@
                 "buttons": [
                     {
                         "type": "postback",
-                        "title": "السؤال التالي",
-                        "payload": "next_q"
+                        "title": "التصويب",
+                        "payload": "correction"
                     },
                     {
                         "type": "postback",
-                        "title": "التصويب",
-                        "payload": "correction"
+                        "title": "السؤال التالي",
+                        "payload": "next_q"
                     }
                 ]
             }]
