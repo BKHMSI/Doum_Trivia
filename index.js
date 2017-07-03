@@ -153,7 +153,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 						cat = obj.category;
 					}
 					var idx = getRandom(data[cat]);
-					var question = data[category][idx]["question"];	
+					var question = data[cat][idx]["question"];	
 					askQuestion(sender, question, cat);
 				}
 			}
