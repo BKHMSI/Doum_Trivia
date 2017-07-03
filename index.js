@@ -233,7 +233,7 @@ function checkAnswerAndUpdate(sender, answer){
 			var update = {
 				user_id: sender,
 				category: category,
-				q_id: idx,
+				q_id: obj.q_id,
 				score: isCorrect ? obj.score+1:obj.score,
 				count: obj.count + 1,
 				total_score: obj.total_score
