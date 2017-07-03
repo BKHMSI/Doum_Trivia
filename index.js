@@ -200,8 +200,8 @@ function checkAnswer(sender, answer){
 		if(err){
 			console.log("Databse Error: " + err);
 		}else{
-			real = data[category][obj.q_id]["answer"];
-			correction = data[category][obj.q_id]["correction"];			
+			real = data[obj.category][obj.q_id]["answer"];
+			correction = data[obj.category][obj.q_id]["correction"];			
 			isCorrect = real == answer;
 			sendCorrection(sender, correction, isCorrect, obj);
 		}
