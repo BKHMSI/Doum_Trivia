@@ -138,7 +138,6 @@ function getRandom(arr){
 
 function getQuestion(sender, category, isFirst, isRandom){
 	if(!isFirst){
-		
 		Game.findOne(query, function(err, obj){
 			if(err){
 				console.log("Databse Error: " + err);
@@ -158,7 +157,6 @@ function getQuestion(sender, category, isFirst, isRandom){
 				}
 			}
 		});
-
 	}else if(categories.indexOf(category) != -1){
 		var idx = getRandom(data[category]);
 		var question = data[category][idx]["question"];
@@ -168,8 +166,8 @@ function getQuestion(sender, category, isFirst, isRandom){
 			user_id: sender,
 			category: isRandom ? "random":category,
 			q_id: idx,
-			score: obj == 0,
-			count: obj == 0,
+			score: 0,
+			count: 0,
 			total_score: 0
 		};
 
