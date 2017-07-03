@@ -173,7 +173,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 					var options = {upsert: true};
 					var update = {
 						user_id: sender,
-						category: obj.category,
+						category: cat,
 						is_random: obj.is_random,
 						q_id: idx,
 						score: obj.score,
