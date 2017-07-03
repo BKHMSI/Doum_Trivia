@@ -18,6 +18,7 @@ var GameSchema = new Schema({
   user_id: {type: String},
   category: {type: String},
   q_id: {type: Number},
+  is_random: {typle: Boolean},
   score: {type: Number},
   count: {type: Number},
   total_score: {type: Number}
@@ -146,7 +147,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 				if(obj.count == 5){
 					sendFinalResult(sender);
 				}else{
-					if(obj.category == "random"){
+					if(obj.is_random){
 						cat = categories[getRandom(categories)];
 					}else{
 						cat = obj.category;
@@ -164,7 +165,8 @@ function getQuestion(sender, category, isFirst, isRandom){
 		var options = {upsert: true};
 		var update = {
 			user_id: sender,
-			category: isRandom ? "random":category,
+			category: category,
+			is_random: isRandom,
 			q_id: idx,
 			score: 0,
 			count: 0,
@@ -234,6 +236,7 @@ function checkAnswerAndUpdate(sender, answer){
 				user_id: sender,
 				category: obj.category,
 				q_id: obj.q_id,
+				is_random: obj.is_random,
 				score: isCorrect ? obj.score+1:obj.score,
 				count: obj.count + 1,
 				total_score: obj.total_score
