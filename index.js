@@ -58,11 +58,11 @@ app.listen(app.get('port'), function() {
 });
 
 // Set FB bot greeting text
-facebookThreadAPI('./json/greeting.json', 'Greating Text');
+facebookMessengerProfile('./json/greeting.json');
 // Set FB bot get started button
-facebookThreadAPI('./json/get_started.json', 'Get Started Button');
+facebookMessengerProfile('./json/get_started.json');
 // Set FB bot persistent menu
-facebookThreadAPI('./json/persistent_menu.json', 'Persistent Menu');
+facebookMessengerProfile('./json/persistent_menu.json');
 
 // Calls the Facebook graph api to change various bot settings
 function facebookThreadAPI(jsonFile, cmd){
@@ -83,6 +83,21 @@ function facebookThreadAPI(jsonFile, cmd){
             console.log(cmd+": Failed. Need to handle errors.");
             console.log(body);
         }
+    });
+}
+
+function facebookMessengerProfile(json_file){
+	request({
+	    url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
+	    qs: { access_token: process.env.FB_PAGE_TOKEN },
+	    method: 'POST',
+	    json: require(json_file)
+    }, function(error, response, body) {
+	    if (error) {
+		    console.log('Error sending messages: ', error);
+	    } else if (response.body.error) {
+		    console.log('Error: ', response.body.error);
+	    }
     });
 }
 

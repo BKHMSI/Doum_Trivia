@@ -1,16 +1,19 @@
 {
-  "local" : "default",
-  "composer_input_disabled": true,
-  "call_to_actions":[
-    {
-      "type":"postback",
-      "title":"القائمة الرئيسية",
-      "payload":"change_category"
-    },
-    {
-      "type": "postback",
-      "title": "عن مؤسسة دوم",
-      "payload":"about"
-    }
-  ]
+  "persistent_menu": [{
+    "local" : "default",
+    "composer_input_disabled": true,
+    "call_to_actions":[
+      {
+        "type":"postback",
+        "title":"القائمة الرئيسية",
+        "payload":"change_category"
+      },
+      {
+        "type": "postback",
+        "title": "عن مؤسسة دوم",
+        "payload":"about"
+      }
+    ]
+  }]
 }
+
