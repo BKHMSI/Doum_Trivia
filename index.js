@@ -3,7 +3,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const fs = require('fs');
 const app = express();
 
 // Q&A
