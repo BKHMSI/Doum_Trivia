@@ -123,9 +123,9 @@ function sendCategories(sender) {
 	sendAPI(sender, message);
 }
 
-
 function sendFinalResult(sender, score){
     let message = require('./json/final_result.json');
+	var query = {user_id: sender};
 	switch(score){
 		case 0: 
 			message.attachment.payload.elements[0].image_url = "https://preview.ibb.co/kqX2qF/Screen_Shot_2017_07_03_at_8_37_21_PM.png";
