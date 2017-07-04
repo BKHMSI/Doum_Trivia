@@ -91,7 +91,7 @@ function facebookMessengerProfile(json_file){
 	    url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
 	    qs: { access_token: process.env.FB_PAGE_TOKEN },
 	    method: 'POST',
-	    json: require(json_file)
+	    json: {require(json_file)}
     }, function(error, response, body) {
 	    if (error) {
 		    console.log('Error sending messages: ', error);
