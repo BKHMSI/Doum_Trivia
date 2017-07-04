@@ -154,14 +154,14 @@ function sendFinalResult(sender, score){
 			var options = {upsert: true};
 			var update = {
 				user_id: sender,
-				category: cat,
+				category: obj.category,
 				is_random: obj.is_random,
-				q_id: idx,
+				q_id: obj.q_id,
 				score: obj.score,
 				count: obj.count,
-				total_score: obj.total_score + obj.score
+				total_score: obj.total_score + score
 			};
-			message.attachment.payload.elements[0].title = "نتيجتك الآن: "+ (obj.total_score + obj.score);
+			message.attachment.payload.elements[0].title = "نتيجتك الآن: "+ (obj.total_score + score);
 			Game.findOneAndUpdate(query, update, options, function(err, game){
 				if(err)
 					console.log("Database Error: "+err);
