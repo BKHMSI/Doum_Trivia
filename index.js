@@ -152,7 +152,32 @@ function sendFinalResult(sender, score){
 			message.attachment.payload.elements[0].subtitle = "";
 			break;
 	} 
-	sendAPI(sender, message);
+
+	Game.findOne(query, function(err, obj){
+		if(err){
+			console.log("Databse Error: " + err);
+		}else{
+			var idx = getRandom(data[cat]);
+			var question = data[cat][idx]["question"];
+			var options = {upsert: true};
+			var update = {
+				user_id: sender,
+				category: cat,
+				is_random: obj.is_random,
+				q_id: idx,
+				score: obj.score,
+				count: obj.count,
+				total_score: obj.total_score + obj.score
+			};
+			message.attachment.payload.elements[0].title = "نتيجتك الآن: "+ (obj.total_score + obj.score);
+			Game.findOneAndUpdate(query, update, options, function(err, game){
+				if(err)
+					console.log("Database Error: "+err);
+				else 
+					sendAPI(sender, message);
+			});
+		}
+	});
 }
 
 function askQuestion(sender, question, category){
@@ -240,7 +265,7 @@ function getQuestion(sender, category, isFirst, isRandom){
 		});
 
 	}else{
-		sendAPI(sender, { text: "Postback received: "+text.substring(0, 200) });
+		sendAPI(sender, { text: "بإمكانك إستخدام القائمة لإختيار المجال" });
 	}
 }
 
@@ -371,7 +396,7 @@ function processMessage(event){
 			checkAnswerAndUpdate(sender, 0);
 			break;
 		default:
-			sendAPI(sender, { text: text.substring(0, 200) });
+			sendAPI(sender, { text: "بإمكانك إستخدام القائمة لإختيار المجال" });
 	}
 }
 
