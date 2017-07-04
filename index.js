@@ -58,7 +58,7 @@ app.listen(app.get('port'), function() {
 });
 
 // Set FB bot greeting text
-//facebookMessengerProfile('./json/greeting.json');
+facebookMessengerProfile('./json/greeting.json');
 // Set FB bot get started button
 facebookMessengerProfile('./json/get_started.json');
 // Set FB bot persistent menu
