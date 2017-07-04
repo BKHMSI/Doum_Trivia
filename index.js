@@ -68,7 +68,7 @@ facebookThreadAPI('./json/persistent_menu.json', 'Persistent Menu');
 function facebookThreadAPI(jsonFile, cmd){
     // Start the request
     request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.FB_PAGE_TOKEN,
+        url: 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+process.env.FB_PAGE_TOKEN,
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         form: require(jsonFile)
