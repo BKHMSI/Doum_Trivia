@@ -39,11 +39,6 @@ app.get('/', function (req, res) {
 	res.send('Hello World! I am a Game. I ask questions. Questions from different fields. People respond. I correct. Who am I?');
 });
 
-// Test route
-app.get('/test', function (req, res) {
-	res.send(history[0]["question"]);
-});
-
 // For Facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === process.env.FB_VERIFICATION_TOKEN) {
@@ -149,8 +144,6 @@ function sendFinalResult(sender, score){
 		if(err){
 			console.log("Databse Error: " + err);
 		}else{
-			var idx = getRandom(data[cat]);
-			var question = data[cat][idx]["question"];
 			var options = {upsert: true};
 			var update = {
 				user_id: sender,

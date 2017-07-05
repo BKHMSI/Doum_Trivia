@@ -1,6 +1,6 @@
 {
   "persistent_menu": [{
-    "local" : "default",
+    "locale" : "default",
     "composer_input_disabled": true,
     "call_to_actions":[
       {
